@@ -33,7 +33,7 @@ _wslrpc_start() {
     if ! mkdir "\$_wslrpc_lock" 2>/dev/null; then
         return 0
     fi
-    if ! ps -u "\$(id -u)" -o args= | awk -v target="$ROOT_DIR/index.js" '\$0 ~ target { found=1 } END { exit(found ? 0 : 1) }'; then
+    if ! ps -u "\$(id -u)" -o args= | awk -v target="$ROOT_DIR/index.js" 'index(\$0, target) { found=1 } END { exit(found ? 0 : 1) }'; then
         nohup node "$ROOT_DIR/index.js" >>"\$_wslrpc_log" 2>&1 </dev/null &
     fi
     rmdir "\$_wslrpc_lock" 2>/dev/null || true
